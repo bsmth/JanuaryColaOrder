@@ -11,6 +11,8 @@ const pool = new Pool({
   ssl: true
 });
 
+console.log(process.env.DATABASE_URL)
+
 var moment = require('moment');
 
 express()
@@ -53,7 +55,7 @@ express()
     try {
       var description = JSON.stringify(req.body.description)
       const client = await pool.connect()
-      const result = await client.query('INSERT INTO ussd_table (date, description) VALUES ($1, $2)', [moment().format('LLLL'), description], (error, results) => {
+      const result = await client.query('INSERT INTO ussd_table (timestamp, description) VALUES ($1, $2)', [moment().format('LLLL'), description], (error, results) => {
         if (error) {
           throw error
         }
@@ -78,6 +80,8 @@ express()
     }
   })
   .post('/http', async (req, res) => {
+    console.log(req.header('Authorization'))
+    console.log(`Bearer ${process.env.APP_TOKEN}`)
     if (req.header('Authorization') !== `Bearer ${process.env.APP_TOKEN}`) {
       let err = 'Invalid token provided\n'
       console.log(err)
@@ -87,7 +91,7 @@ express()
     try {
       var description = JSON.stringify(req.body.description)
       const client = await pool.connect()
-      const result = await client.query('INSERT INTO http_table (date, description) VALUES ($1, $2)', [moment().format('LLLL'), description], (error, results) => {
+      const result = await client.query('INSERT INTO http_table (timestamp, description) VALUES ($1, $2)', [moment().format('LLLL'), description], (error, results) => {
         if (error) {
           throw error
         }
