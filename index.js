@@ -46,12 +46,6 @@ express()
     }
   })
   .post('/ussd', async (req, res) => {
-    if (req.header('Authorization') !== `Bearer ${process.env.APP_TOKEN}`) {
-      let err = 'Invalid token provided\n'
-      console.log(err)
-      res.status(401).end(err)
-      return
-    }
     try {
       var description = JSON.stringify(req.body.description)
       const client = await pool.connect()
@@ -89,7 +83,7 @@ express()
       return
     }
     try {
-      var description = JSON.stringify(req.body.description)
+      var description = JSON.stringify(req.body)
       const client = await pool.connect()
       const result = await client.query('INSERT INTO http_table (timestamp, description) VALUES ($1, $2)', [moment().format('LLLL'), description], (error, results) => {
         if (error) {
