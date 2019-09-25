@@ -44,7 +44,7 @@ express()
     }
   })
   .post('/ussd', async (req, res) => {
-    if (!req.body || req.body.token !== process.env.APP_TOKEN) {
+    if (req.header('Authorization') !== `Bearer ${process.env.APP_TOKEN}`) {
       let err = 'Invalid token provided\n'
       console.log(err)
       res.status(401).end(err)
@@ -78,7 +78,7 @@ express()
     }
   })
   .post('/http', async (req, res) => {
-    if (!req.body || req.body.token !== process.env.APP_TOKEN) {
+    if (req.header('Authorization') !== `Bearer ${process.env.APP_TOKEN}`) {
       let err = 'Invalid token provided\n'
       console.log(err)
       res.status(401).end(err)
