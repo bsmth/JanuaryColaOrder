@@ -34,7 +34,7 @@ express()
       res.send("Error " + err);
     }
   })
-  .post('/ussd', (req, res) => {
+  .post('/ussd', async (req, res) => {
     console.log(req.headers)
     console.log(req.body)
     res.status(200).send({
