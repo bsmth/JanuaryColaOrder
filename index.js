@@ -35,7 +35,7 @@ express()
     }
   })
   .post('/ussd', async (req, res) => {
-    console.log(req.headers)
+    console.log(req.header('User-Agent'))
     console.log(req.body)
     res.status(200).send({
       "ussd-continue": {
@@ -73,6 +73,8 @@ express()
     }
   })
   .post('/http', async (req, res) => {
+    console.log(req.header('User-Agent'))
+    console.log(req.headers('Authorization'))
     if (req.headers('Authorization') !== `Bearer ${process.env.APP_TOKEN}`) {
       let err = 'Invalid token provided\n'
       console.log(err)
