@@ -23,6 +23,7 @@ express()
   .set('view engine', 'ejs')
   .get('/', (req, res) => res.render('pages/index'))
   .post('/ussd', (req, res) => {
+    console.log(req)
     console.log(req.body)
     res.status(200).send({
       "ussd-continue": {
